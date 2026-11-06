@@ -17,12 +17,10 @@ public class MenuRunner
         {
             Console.Clear();
 
-           
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             ConsoleHelper.PrintHeader("=== Практикум по C# ===");
             Console.ResetColor();
 
-         
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("1. Уровень 1 — Базовый (задания 1–15)");
             Console.ResetColor();
@@ -41,7 +39,6 @@ public class MenuRunner
 
             Console.WriteLine();
 
-           
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write("Выберите уровень: ");
             Console.ResetColor();
@@ -53,73 +50,15 @@ public class MenuRunner
                 Console.WriteLine("Выход из программы...");
                 break;
             }
-            else if (input == "1")
+            else if (input == "1" || input == "2" || input == "3")
             {
-                ShowLevel(1);
-            }
-            else if (input == "2")
-            {
-                ShowLevel(2);
-            }
-            else if (input == "3")
-            {
-                ShowLevel(3);
+                int level = int.Parse(input);
+                LevelMenu levelMenu = new LevelMenu(level);
+                levelMenu.Show();
             }
             else
             {
                 Console.WriteLine("\nНеверный ввод. Нажмите Enter и попробуйте снова...");
-                Console.ReadLine();
-            }
-        }
-    }
-
-    private void ShowLevel(int level)
-    {
-        
-        var tasks = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => typeof(ITask).IsAssignableFrom(t) && t.GetCustomAttribute<TaskInfoAttribute>() != null)
-            .Select(t => new { Type = t, Info = t.GetCustomAttribute<TaskInfoAttribute>()! })
-            .Where(x => x.Info.Number >= (level - 1) * 15 + 1 && x.Info.Number <= level * 15)
-            .OrderBy(x => x.Info.Number)
-            .ToList();
-
-        if (tasks.Count == 0)
-        {
-            Console.WriteLine("\nВ этом уровне пока нет заданий.");
-            Console.WriteLine("Нажмите Enter для возврата...");
-            Console.ReadLine();
-            return;
-        }
-
-        Console.WriteLine($"\n--- Уровень {level} ---");
-        foreach (var task in tasks)
-        {
-            Console.WriteLine($"{task.Info.Number}. {task.Info.Title}");
-        }
-
-        Console.Write("\nВыберите задание (или 0 для выхода): ");
-        if (int.TryParse(Console.ReadLine(), out int taskNumber))
-        {
-            var selectedTask = tasks.FirstOrDefault(t => t.Info.Number == taskNumber);
-            if (selectedTask != null)
-            {
-                Console.Clear();
-                ConsoleHelper.PrintHeader($"Задание {selectedTask.Info.Number}. {selectedTask.Info.Title}");
-
-                Console.WriteLine("Описание:");
-                Console.WriteLine($"  {selectedTask.Info.Description}");
-                Console.WriteLine("\nТребования:");
-                foreach (var req in selectedTask.Info.Requirements)
-                    Console.WriteLine($"  - {req}");
-
-                Console.WriteLine(new string('-', 50));
-                Console.WriteLine("[запуск решения...]\n");
-
-                // Создаем экземпляр задания и запускаем
-                var instance = (ITask)Activator.CreateInstance(selectedTask.Type)!;
-                instance.Run();
-
-                Console.WriteLine("\nНажмите Enter для возврата в меню...");
                 Console.ReadLine();
             }
         }
