@@ -17,6 +17,7 @@ public class Task01_HelloWorld : ITask
     public void Run()
     {
         Console.WriteLine("Hello, World!");
-        Console.WriteLine($"Текущая дата и время: {DateTime.Now}");
+        
+        Console.WriteLine($"Текущая дата: {DateTime.Now:dd.MM.yyyy}");
     }
 }
