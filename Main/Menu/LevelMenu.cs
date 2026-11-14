@@ -25,7 +25,10 @@ public class LevelMenu
         var tasks = Assembly.GetExecutingAssembly().GetTypes()
             .Where(t => typeof(ITask).IsAssignableFrom(t) && t.GetCustomAttribute<TaskInfoAttribute>() != null)
             .Select(t => new { Type = t, Info = t.GetCustomAttribute<TaskInfoAttribute>()! })
-            .Where(x => x.Info.Number >= (_level - 1) * 15 + 1 && x.Info.Number <= _level * 15)
+            .Where(x =>
+    (_level == 1 && x.Info.Number >= 1 && x.Info.Number <= 15) ||
+    (_level == 2 && x.Info.Number >= 16 && x.Info.Number <= 35) ||
+    (_level == 3 && x.Info.Number >= 36 && x.Info.Number <= 50))
             .OrderBy(x => x.Info.Number)
             .ToList();
 
