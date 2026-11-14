@@ -25,8 +25,8 @@
 В редакторе три коммита были объединены (squash) в один.
 Итоговый лог после rebase:
 
-dd36cb3 (HEAD -> feature/rebase-demo, origin/feature/rebase-demo) feat: combined commits for rebase demo
-e76b6cf (origin/level-2, level-2) chore: add gitignore and editorconfig
-0ba4e5b feat: task 34 - linq word grouping
-7cd1f60 feat: task 33 - linq employees queries
-7731464 feat: task 32 - temperature with validation
+* dd36cb3 (HEAD -> feature/rebase-demo, origin/feature/rebase-demo) feat: combined commits for rebase demo
+* e76b6cf (origin/level-2, level-2) chore: add gitignore and editorconfig
+* 0ba4e5b feat: task 34 - linq word grouping
+* 7cd1f60 feat: task 33 - linq employees queries
+* 7731464 feat: task 32 - temperature with validation
