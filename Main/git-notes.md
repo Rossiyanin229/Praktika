@@ -101,3 +101,25 @@ bca11d9 (origin/master, origin/HEAD, main) HEAD@{4}: commit: docs: task 48 - add
 81a8fc5 (HEAD -> level-3) feat: test commit for reflog
 b807773 (origin/level-3) docs: task 48 - add tags notes
 bb0781d docs: task 46 - add stash notes
+
+
+## Task 50 — git bisect
+### Commands
+- Создано 10+ коммитов (файлы file_1.txt ... file_10.txt).
+- В середину истории добавлен «сломанный» коммит (`feat: broken commit`), где file_5.txt содержит BROKEN.
+- `git bisect start`
+- `git bisect bad HEAD`
+- `git bisect good 9c88fa8`
+- Пройдена бисекция (проверка файлов через `type file_5.txt`).
+- `git bisect reset`
+
+### Output (git bisect)
+6f05c025cc71c9202fc2e730db5c66633f19f575 is the first bad commit
+commit 6f05c025cc71c9202fc2e730db5c66633f19f575
+Author: Gnom <saxnov0707@mail.ru>
+Date:   Sun Nov 15 03:49:56 2026 +0300
+
+    feat: broken commit
+
+ file_5.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
