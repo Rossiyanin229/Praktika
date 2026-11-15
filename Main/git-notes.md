@@ -82,3 +82,22 @@ index c94528e..c30e3cc 100644
 +* 0ba4e5b feat: task 34 - linq word grouping
 +* 7cd1f60 feat: task 33 - linq employees queries
 +* 7731464 feat: task 32 - temperature with validation
+
+## Task 49 — git reflog
+### Commands
+- Сделан коммит `feat: test commit for reflog`.
+- Удален: `git reset --hard HEAD~1`.
+- Найден хеш через `git reflog`.
+- Восстановлен: `git reset --hard 81a8fc5`.
+
+### Output (git reflog)
+b807773 (HEAD -> level-3, origin/level-3) HEAD@{0}: reset: moving to HEAD~1
+81a8fc5 HEAD@{1}: commit: feat: test commit for reflog
+b807773 (HEAD -> level-3, origin/level-3) HEAD@{2}: commit: docs: task 48 - add tags notes
+bb0781d HEAD@{3}: checkout: moving from main to level-3
+bca11d9 (origin/master, origin/HEAD, main) HEAD@{4}: commit: docs: task 48 - add tags notes
+
+### Output (git log --oneline)
+81a8fc5 (HEAD -> level-3) feat: test commit for reflog
+b807773 (origin/level-3) docs: task 48 - add tags notes
+bb0781d docs: task 46 - add stash notes
