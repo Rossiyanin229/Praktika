@@ -43,3 +43,24 @@
 
 ### Output (git stash list)
 stash@{0}: WIP on level-3: 47f51a3 feat: task 45 - library with unit tests  
+
+
+## Task 47 — git rebase -i (squash)
+### Commands
+- Создана ветка `feature/squash-demo`.
+- Сделано 4 коммита.
+- Выполнено: `git rebase -i HEAD~4` (squash).
+
+### Log before rebase
+* ea097cb (HEAD -> feature/squash-demo) feat: squash commit 4
+* 7d226d9 feat: squash commit 3
+* e9e7d00 feat: squash commit 2
+* 4000624 feat: squash commit 1
+* bb0781d (origin/level-3, level-3) docs: task 46 - add stash notes
+
+### Log after rebase
+* be24f2b (HEAD -> feature/squash-demo) feat: combined squash commits
+* bb0781d (origin/level-3, level-3) docs: task 46 - add stash notes
+* 47f51a3 feat: task 45 - library with unit tests
+* d6e7a29 feat: task 44 - todo list with json
+* cf53424 feat: task 43 - exception order demonstration
