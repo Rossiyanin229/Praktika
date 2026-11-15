@@ -32,6 +32,17 @@
 * 7731464 feat: task 32 - temperature with validation
 
 
+## Task 46 — git stash
+
+### Commands
+- Внесены изменения в файл без коммита.
+- `git stash` — изменения спрятаны.
+- `git --no-pager stash list` — проверка списка.
+- Переключение на другую ветку и возврат на `level-3`.
+- `git stash pop` — изменения восстановлены.
+
+### Output (git stash list)
+stash@{0}: WIP on level-3: 47f51a3 feat: task 45 - library with unit tests  
 
 ## Task 48 — git tags
 ### Commands
@@ -71,3 +82,44 @@ index c94528e..c30e3cc 100644
 +* 0ba4e5b feat: task 34 - linq word grouping
 +* 7cd1f60 feat: task 33 - linq employees queries
 +* 7731464 feat: task 32 - temperature with validation
+
+## Task 49 — git reflog
+### Commands
+- Сделан коммит `feat: test commit for reflog`.
+- Удален: `git reset --hard HEAD~1`.
+- Найден хеш через `git reflog`.
+- Восстановлен: `git reset --hard 81a8fc5`.
+
+### Output (git reflog)
+b807773 (HEAD -> level-3, origin/level-3) HEAD@{0}: reset: moving to HEAD~1
+81a8fc5 HEAD@{1}: commit: feat: test commit for reflog
+b807773 (HEAD -> level-3, origin/level-3) HEAD@{2}: commit: docs: task 48 - add tags notes
+bb0781d HEAD@{3}: checkout: moving from main to level-3
+bca11d9 (origin/master, origin/HEAD, main) HEAD@{4}: commit: docs: task 48 - add tags notes
+
+### Output (git log --oneline)
+81a8fc5 (HEAD -> level-3) feat: test commit for reflog
+b807773 (origin/level-3) docs: task 48 - add tags notes
+bb0781d docs: task 46 - add stash notes
+
+
+## Task 50 — git bisect
+### Commands
+- Создано 10+ коммитов (файлы file_1.txt ... file_10.txt).
+- В середину истории добавлен «сломанный» коммит (`feat: broken commit`), где file_5.txt содержит BROKEN.
+- `git bisect start`
+- `git bisect bad HEAD`
+- `git bisect good 9c88fa8`
+- Пройдена бисекция (проверка файлов через `type file_5.txt`).
+- `git bisect reset`
+
+### Output (git bisect)
+6f05c025cc71c9202fc2e730db5c66633f19f575 is the first bad commit
+commit 6f05c025cc71c9202fc2e730db5c66633f19f575
+Author: Gnom <saxnov0707@mail.ru>
+Date:   Sun Nov 15 03:49:56 2026 +0300
+
+    feat: broken commit
+
+ file_5.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)

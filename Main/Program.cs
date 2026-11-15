@@ -1,4 +1,4 @@
-﻿using Main.Menu;
+using Main.Menu;
 
 namespace Main;
 
@@ -10,3 +10,4 @@ internal class Program
         menu.Run();
     }
 }
+// Тестовый коммит для reflog
