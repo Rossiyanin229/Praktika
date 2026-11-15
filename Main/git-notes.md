@@ -30,3 +30,16 @@
 * 0ba4e5b feat: task 34 - linq word grouping
 * 7cd1f60 feat: task 33 - linq employees queries
 * 7731464 feat: task 32 - temperature with validation
+
+
+## Task 46 — git stash
+
+### Commands
+- Внесены изменения в файл без коммита.
+- `git stash` — изменения спрятаны.
+- `git --no-pager stash list` — проверка списка.
+- Переключение на другую ветку и возврат на `level-3`.
+- `git stash pop` — изменения восстановлены.
+
+### Output (git stash list)
+stash@{0}: WIP on level-3: 47f51a3 feat: task 45 - library with unit tests  
