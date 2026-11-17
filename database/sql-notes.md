@@ -28,4 +28,62 @@ CREATE TABLE Departments (
 
 Изучил синтаксис DDL (CREATE DATABASE, CREATE TABLE). Понял, как работают внешние ключи (FOREIGN KEY) и ограничения (PRIMARY KEY, IDENTITY).
 
-123
+## Task 02 — INSERT: заполнение данными
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+
+INSERT INTO Departments (DepartmentName) VALUES
+    (N'Разработка'),
+    (N'Аналитика'),
+    (N'Тестирование'),
+    (N'Менеджмент');
+
+
+INSERT INTO Employees (EmployeeName, Salary, HireDate, DepartmentId, ManagerId) VALUES
+    (N'Анна Иванова',    65000, '2020-03-15', 1, NULL),
+    (N'Пётр Сидоров',    72000, '2019-07-01', 1, NULL),
+    (N'Мария Кузнецова', 55000, '2021-11-20', 1, NULL),
+    (N'Иван Петров',     48000, '2023-02-10', 1, NULL),
+    (N'Ольга Смирнова',  61000, '2020-09-05', 2, NULL),
+    (N'Дмитрий Орлов',   58000, '2022-04-18', 2, NULL),
+    (N'Елена Волкова',   52000, '2023-06-01', 2, NULL),
+    (N'Сергей Морозов',  45000, '2021-12-12', 3, NULL),
+    (N'Наталья Соколова',43000, '2024-01-15', 3, NULL),
+    (N'Алексей Лебедев', 90000, '2018-05-25', 4, NULL);
+
+
+INSERT INTO Projects (ProjectName, StartDate) VALUES
+    (N'CRM System',      '2023-01-10'),
+    (N'Mobile App',      '2023-05-01'),
+    (N'Data Warehouse',  '2022-11-20'),
+    (N'AI Assistant',    '2024-02-01'),
+    (N'Legacy Refactor', '2021-06-15');
+
+
+INSERT INTO EmployeeProjects (EmployeeId, ProjectId, Hours) VALUES
+    (1, 1, 120), (1, 3, 80),
+    (2, 1, 150), (2, 4, 60),
+    (3, 2, 100), (4, 2, 90),
+    (4, 5, 40),  (5, 3, 110),
+    (6, 3, 70),  (6, 4, 50),
+    (7, 2, 95),  (8, 5, 130),
+    (10, 4, 200),(10, 1, 30);
+
+
+SELECT 'Departments' AS TableName, COUNT(*) AS [Count] FROM Departments
+UNION ALL
+SELECT 'Employees', COUNT(*) FROM Employees
+UNION ALL
+SELECT 'Projects', COUNT(*) FROM Projects
+UNION ALL
+SELECT 'EmployeeProjects', COUNT(*) FROM EmployeeProjects;
+```
+### Результат
+Departments: 4, Employees: 10, Projects: 5, EmployeeProjects: 14.
+
+### Вывод
+Понял, как работает множественный INSERT (один запрос на несколько строк). Убедился, что количество строк совпадает с ожидаемым.
