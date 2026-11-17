@@ -87,3 +87,49 @@ Departments: 4, Employees: 10, Projects: 5, EmployeeProjects: 14.
 
 ### Вывод
 Понял, как работает множественный INSERT (один запрос на несколько строк). Убедился, что количество строк совпадает с ожидаемым.
+## Task 03 — SELECT + WHERE: базовые выборки
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+-- 1. Сотрудники с зарплатой > 50000
+SELECT EmployeeId, EmployeeName, Salary
+FROM Employees
+WHERE Salary > 50000;
+GO
+
+-- 2. Сотрудники, нанятые в 2023 году
+SELECT EmployeeId, EmployeeName, HireDate
+FROM Employees
+WHERE YEAR(HireDate) = 2023;
+GO
+
+-- 3. Сотрудники, чьё имя начинается на «А»
+SELECT EmployeeId, EmployeeName
+FROM Employees
+WHERE EmployeeName LIKE N'А%';
+GO
+
+-- 4. Сотрудники из отдела DepartmentId = 2
+SELECT EmployeeId, EmployeeName, DepartmentId
+FROM Employees
+WHERE DepartmentId = 2;
+GO
+
+-- 5. Сотрудники с зарплатой в диапазоне 40000–60000
+SELECT EmployeeId, EmployeeName, Salary
+FROM Employees
+WHERE Salary BETWEEN 40000 AND 60000;
+GO
+```
+### Результат
+* Сотрудники с зарплатой > 50000: Анна Иванова, Пётр Сидоров, Мария Кузнецова, Ольга Смирнова, Дмитрий Орлов, Елена Волкова, Алексей Лебедев
+* Нанятые в 2023: Иван Петров, Елена Волкова
+* Сотрудники, чьё имя начинается на «А»: Анна Иванова, Алексей Лебедев
+* Сотрудники из отдела DepartmentId = 2: Ольга Смирнова, Дмитрий Орлов, Елена Волкова
+* Сотрудники с зарплатой в диапазоне 40000–60000: Мария Кузнецова, Иван Петров, Дмитрий Орлов, Елена Волкова, Сергей Морозов, Наталья Соколова
+
+### Вывод
+Изучил оператор WHERE и логические условия. Понял, как работает LIKE для поиска по шаблону и BETWEEN для диапазонов.
