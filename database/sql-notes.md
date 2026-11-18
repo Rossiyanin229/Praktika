@@ -166,3 +166,39 @@ GO
 ### Вывод
 Научился использовать ORDER BY для сортировки по одному или нескольким столбцам (с указанием ASC/DESC). Понял, как работает TOP N для ограничения количества строк.
 
+## Task 05 — Агрегация: COUNT, SUM, AVG, MIN, MAX
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    COUNT(*) AS TotalEmployees,
+    SUM(Salary) AS TotalSalary,
+    ROUND(AVG(Salary), 2) AS AverageSalary,
+    MIN(Salary) AS MinSalary,
+    MAX(Salary) AS MaxSalary
+FROM Employees;
+GO
+
+SELECT COUNT(*) AS EmployeesWithHighSalary
+FROM Employees
+WHERE Salary > 50000;
+GO
+```
+### Результат
+* TotalEmployees: 10
+
+* TotalSalary: 589000.00
+
+* AverageSalary: 58900.00
+
+* MinSalary: 43000.00
+
+* MaxSalary: 90000.00
+
+* EmployeesWithHighSalary: 7
+
+### Вывод
+Изучил агрегатные функции. Узнал, что COUNT(*) считает все строки, а COUNT(column) — только строки, где значение не NULL. Понял, как работает ROUND для округления и CASE внутри COUNT для условного подсчета.
