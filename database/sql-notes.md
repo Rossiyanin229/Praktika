@@ -133,3 +133,36 @@ GO
 
 ### Вывод
 Изучил оператор WHERE и логические условия. Понял, как работает LIKE для поиска по шаблону и BETWEEN для диапазонов.
+
+## Task 04 — ORDER BY + TOP: сортировка и лимит
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT TOP 3 EmployeeId, EmployeeName, Salary
+FROM Employees
+ORDER BY Salary DESC;
+GO
+
+SELECT TOP 5 EmployeeId, EmployeeName, HireDate
+FROM Employees
+ORDER BY HireDate ASC;
+GO
+
+SELECT EmployeeId, EmployeeName, DepartmentId, Salary
+FROM Employees
+ORDER BY DepartmentId ASC, Salary DESC;
+GO
+```
+### Результат
+* Топ-3 по зарплате: Алексей Лебедев, Пётр Сидоров, Анна Иванова.
+
+* Топ-5 самых давних: Алексей Лебедев, Пётр Сидоров, Ольга Смирнова, Анна Иванова, Мария Кузнецова.
+
+* Сотрудники отсортированы по отделам (1, 2, 3, 4), внутри отдела — по убыванию зарплаты.
+
+### Вывод
+Научился использовать ORDER BY для сортировки по одному или нескольким столбцам (с указанием ASC/DESC). Понял, как работает TOP N для ограничения количества строк.
+
