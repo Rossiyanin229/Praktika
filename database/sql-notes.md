@@ -474,3 +474,55 @@ EmployeeName	|Salary|	DepartmentId|	DeptAvgSalary|	Difference
 
 ### Вывод
 Научился использовать скалярный подзапрос в SELECT. Он выполняется для каждой строки внешнего запроса и возвращает одно значение (в нашем случае — среднюю зарплату по отделу сотрудника). Это позволяет сравнивать значения «на лету» без дополнительных JOIN.
+
+## Task 14 — EXISTS / NOT EXISTS
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+
+SELECT e.EmployeeId, e.EmployeeName
+FROM Employees e
+WHERE EXISTS (
+    SELECT 1 
+    FROM EmployeeProjects ep 
+    WHERE ep.EmployeeId = e.EmployeeId
+);
+GO
+
+
+SELECT e.EmployeeId, e.EmployeeName
+FROM Employees e
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM EmployeeProjects ep 
+    WHERE ep.EmployeeId = e.EmployeeId
+);
+GO
+```
+
+### Результат
+* Сотрудники, у которых есть хотя бы один проект
+
+EmployeeId|	EmployeeName
+---|---
+1	|Анна Иванова
+2	|Пётр Сидоров
+3	|Мария Кузнецова
+4	|Иван Петров
+5	|Ольга Смирнова
+6	|Дмитрий Орлов
+7	|Елена Волкова
+8|	Сергей Морозов
+10	|Алексей Лебедев
+
+* Сотрудники, у которых нет проектов
+
+EmployeeId	|EmployeeName
+---|---
+9	|Наталья Соколова
+
+### Вывод
+Разобрался с EXISTS и NOT EXISTS. В отличие от JOIN, они не дублируют строки и не выполняют соединение таблиц, а просто проверяют, возвращает ли подзапрос хотя бы одну строку. Результаты совпадают с заданиями 8 и 9, что подтверждает правильность логики.
