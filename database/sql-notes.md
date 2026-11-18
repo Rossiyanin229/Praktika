@@ -231,3 +231,39 @@ DepartmentId|EmployeeCount|AvgSalary|TotalSalary
 
 ### Вывод
 Научился использовать GROUP BY для группировки строк по значению столбца. Понял, что агрегатные функции (COUNT, AVG, SUM) применяются к каждой группе отдельно. Также освоил сортировку результата группировки через ORDER BY.
+
+## Task 07 — GROUP BY + HAVING: фильтрация групп
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT DepartmentId, COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY DepartmentId
+HAVING COUNT(*) > 2;
+GO
+
+SELECT DepartmentId, ROUND(AVG(Salary), 2) AS AvgSalary
+FROM Employees
+GROUP BY DepartmentId
+HAVING AVG(Salary) > 55000;
+GO
+
+SELECT DepartmentId, SUM(Salary) AS TotalSalary
+FROM Employees
+GROUP BY DepartmentId
+HAVING SUM(Salary) > 150000;
+GO
+```
+
+### Результат
+* Отделы с >2 сотрудниками: DepartmentId = 1 (4 сотрудника), DepartmentId = 2 (3 сотрудника).
+
+* Отделы со средней зарплатой > 55000: DepartmentId = 1 (60000.00), DepartmentId = 4 (90000.00).
+
+* Отделы с суммарной зарплатой > 150000: DepartmentId = 1 (240000.00), DepartmentId = 2 (171000.00).
+
+### Вывод
+Понял ключевое отличие WHERE от HAVING: WHERE фильтрует строки до группировки, а HAVING — после (применяется к результатам агрегатных функций). Научился использовать HAVING с COUNT, AVG и SUM.
