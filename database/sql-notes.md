@@ -526,3 +526,58 @@ EmployeeId	|EmployeeName
 
 ### Вывод
 Разобрался с EXISTS и NOT EXISTS. В отличие от JOIN, они не дублируют строки и не выполняют соединение таблиц, а просто проверяют, возвращает ли подзапрос хотя бы одну строку. Результаты совпадают с заданиями 8 и 9, что подтверждает правильность логики.
+
+## Task 15 — UNION / UNION ALL
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+-- UNION
+SELECT EmployeeId, EmployeeName, Salary, HireDate
+FROM Employees
+WHERE Salary > 60000
+
+UNION
+
+SELECT EmployeeId, EmployeeName, Salary, HireDate
+FROM Employees
+WHERE YEAR(HireDate) < 2022;
+GO
+
+-- UNION ALL 
+SELECT EmployeeId, EmployeeName, Salary, HireDate
+FROM Employees
+WHERE Salary > 60000
+
+UNION ALL
+
+SELECT EmployeeId, EmployeeName, Salary, HireDate
+FROM Employees
+WHERE YEAR(HireDate) < 2022;
+GO
+
+-- Сравнение
+SELECT 'UNION' AS QueryType, COUNT(*) AS RovCount FROM (
+    SELECT EmployeeId FROM Employees WHERE Salary > 60000
+    UNION
+    SELECT EmployeeId FROM Employees WHERE YEAR(HireDate) < 2022
+) AS t1
+UNION ALL
+SELECT 'UNION ALL', COUNT(*) FROM (
+    SELECT EmployeeId FROM Employees WHERE Salary > 60000
+    UNION ALL
+    SELECT EmployeeId FROM Employees WHERE YEAR(HireDate) < 2022
+) AS t2;
+GO
+```
+### Результат
+
+QueryType	|RovCount
+---|---
+UNION	|6
+UNION ALL	|10
+
+### Вывод
+Понял разницу: UNION удаляет дубликаты (медленнее), а UNION ALL оставляет все строки (быстрее). Важно, чтобы количество и типы столбцов в обоих запросах совпадали.
