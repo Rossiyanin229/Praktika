@@ -301,3 +301,27 @@ EmployeeName|DepartmentName|Salary
 
 ### Вывод
 Научился использовать INNER JOIN для соединения двух таблиц по общему ключу (DepartmentId). Понял, что INNER JOIN возвращает только те строки, где есть совпадение в обеих таблицах.
+
+## Task 09 — LEFT JOIN: сотрудники без проектов
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    e.EmployeeId,
+    e.EmployeeName
+FROM Employees e
+LEFT JOIN EmployeeProjects ep ON e.EmployeeId = ep.EmployeeId
+WHERE ep.EmployeeId IS NULL;
+GO
+```
+
+### Результат
+EmployeeId|EmployeeName
+---|---
+9|Наталья Соколова
+
+### Вывод
+Разобрался, как работает LEFT JOIN: он возвращает все строки из левой таблицы (Employees), даже если в правой (EmployeeProjects) нет совпадений. В таких случаях правая часть заполняется NULL. Фильтр WHERE ep.EmployeeId IS NULL позволяет найти «сирот» — сотрудников без проектов.
