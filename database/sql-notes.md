@@ -581,3 +581,86 @@ UNION ALL	|10
 
 ### Вывод
 Понял разницу: UNION удаляет дубликаты (медленнее), а UNION ALL оставляет все строки (быстрее). Важно, чтобы количество и типы столбцов в обоих запросах совпадали.
+
+## Task 16 — UPDATE: изменение данных
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+-- Увеличение зарплаты сотрудников отдела 1 на 10%
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE DepartmentId = 1;
+UPDATE Employees SET Salary = Salary * 1.10 WHERE DepartmentId = 1;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE DepartmentId = 1;
+GO
+
+-- Увеличение зарплаты сотрудников, нанятых до 2022 года, на 5000
+SELECT EmployeeId, EmployeeName, Salary, HireDate FROM Employees WHERE YEAR(HireDate) < 2022;
+UPDATE Employees SET Salary = Salary + 5000 WHERE YEAR(HireDate) < 2022;
+SELECT EmployeeId, EmployeeName, Salary, HireDate FROM Employees WHERE YEAR(HireDate) < 2022;
+GO
+
+-- Обновление HireDate одного сотрудника
+SELECT EmployeeId, EmployeeName, HireDate FROM Employees WHERE EmployeeId = 4;
+UPDATE Employees SET HireDate = '2023-03-01' WHERE EmployeeId = 4;
+SELECT EmployeeId, EmployeeName, HireDate FROM Employees WHERE EmployeeId = 4;
+GO
+```
+
+### Результат
+
+* 1 До:
+
+EmployeeId	|EmployeeName|	Salary
+---|---|---
+1	|Анна Иванова	|65000.00
+2	|Пётр Сидоров	|72000.00
+3	|Мария Кузнецова	|55000.00
+4	|Иван Петров	|48000.00
+
+* 1 После:
+
+EmployeeId	|EmployeeName	|Salary
+---|---|---
+1	|Анна Иванова	|71500.00
+2	|Пётр Сидоров	|79200.00
+3	|Мария Кузнецова	|60500.00
+4	|Иван Петров	|52800.00
+
+* 2 До:
+
+EmployeeId	|EmployeeName	|Salary	|HireDate
+---|---|---|---
+1	|Анна Иванова	|71500.00	|2020-03-15
+2	|Пётр Сидоров	|79200.00	|2019-07-01
+3	|Мария Кузнецова	|60500.00	|2021-11-20
+5	|Ольга Смирнова	|61000.00	|2020-09-05
+8	|Сергей Морозов	|45000.00	|2021-12-12
+10	|Алексей Лебедев	|90000.00	|2018-05-25
+
+* 2 После:
+
+EmployeeId	|EmployeeName	|Salary	|HireDate
+---|---|---|---
+1	|Анна Иванова	|76500.00	|2020-03-15
+2	|Пётр Сидоров	|84200.00	|2019-07-01
+3	|Мария Кузнецова|	65500.00	|2021-11-20
+5	|Ольга Смирнова	|66000.00	|2020-09-05
+8	|Сергей Морозов|	50000.00	|2021-12-12
+10	|Алексей Лебедев	|95000.00	|2018-05-25
+
+* 3 До:
+
+EmployeeId	|EmployeeName	|HireDate
+---|---|---
+4	|Иван Петров	|2023-02-10
+
+* 3 После:
+
+EmployeeId	|EmployeeName	|HireDate
+---|---|---
+4	|Иван Петров	|2023-03-01
+
+### Вывод
+Научился использовать UPDATE с условием WHERE. Понял, что важно сначала делать SELECT, чтобы не обновить лишние строки. Арифметические операции (* 1.10, + 5000) работают прямо в SET.
