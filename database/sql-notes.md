@@ -401,3 +401,40 @@ EmployeeName	|ManagerName
 
 ### Вывод
 Научился использовать self-join — соединение таблицы с самой собой. Для этого мы используем два алиаса (e для сотрудника, m для руководителя) и связываем ManagerId с EmployeeId. LEFT JOIN нужен, чтобы сотрудники без руководителя тоже попали в результат (с NULL в поле ManagerName).
+
+## Task 12 — Подзапросы в WHERE
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT EmployeeId, EmployeeName, Salary
+FROM Employees
+WHERE Salary > (SELECT AVG(Salary) FROM Employees);
+GO
+
+SELECT EmployeeId, EmployeeName, Salary
+FROM Employees
+WHERE Salary = (SELECT MAX(Salary) FROM Employees);
+GO
+```
+
+### Результат
+* Выше средней (средняя = 58900.00):
+
+EmployeeId	|EmployeeName	|Salary
+---|---|---
+1	|Анна Иванова	|65000.00
+2|	Пётр Сидоров	|72000.00
+5	|Ольга Смирнова|	61000.00
+10	|Алексей Лебедев	|90000.00
+
+* С максимальной зарплатой:
+
+EmployeeId	|EmployeeName	|Salary
+---|---|---
+10|	Алексей Лебедев	|90000.00
+
+### Вывод
+Понял, как работают подзапросы в WHERE: сначала выполняется внутренний запрос (например, находит среднюю или максимальную зарплату), а затем внешний запрос использует это значение для фильтрации. Это позволяет делать динамические сравнения без жестко заданных чисел.
