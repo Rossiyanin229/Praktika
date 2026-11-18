@@ -202,3 +202,32 @@ GO
 
 ### Вывод
 Изучил агрегатные функции. Узнал, что COUNT(*) считает все строки, а COUNT(column) — только строки, где значение не NULL. Понял, как работает ROUND для округления и CASE внутри COUNT для условного подсчета.
+
+## Task 06 — GROUP BY: статистика по отделам
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    DepartmentId,
+    COUNT(*) AS EmployeeCount,
+    ROUND(AVG(Salary), 2) AS AvgSalary,
+    SUM(Salary) AS TotalSalary
+FROM Employees
+GROUP BY DepartmentId
+ORDER BY AvgSalary DESC;
+GO
+```
+### Результат
+
+DepartmentId|EmployeeCount|AvgSalary|TotalSalary
+---|---|---|---
+4|1|90000.00|90000.00
+1|4|60000.00|240000.00
+2|3|57000.00|171000.00
+3|2|44000.00|88000.00
+
+### Вывод
+Научился использовать GROUP BY для группировки строк по значению столбца. Понял, что агрегатные функции (COUNT, AVG, SUM) применяются к каждой группе отдельно. Также освоил сортировку результата группировки через ORDER BY.
