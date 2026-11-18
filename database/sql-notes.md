@@ -367,3 +367,37 @@ EmployeeName	|DepartmentName|	ProjectName	|Hours
 
 ### Вывод
 Научился соединять более двух таблиц с помощью последовательных INNER JOIN. Понял, как важно правильно указывать связи через ON (по общим ключам). Также убедился, что сортировка по нескольким столбцам (ORDER BY d.DepartmentName, e.EmployeeName, p.ProjectName) позволяет получить аккуратный и читаемый результат.
+
+## Task 11 — Self-join: иерархия руководителей
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    e.EmployeeName,
+    m.EmployeeName AS ManagerName
+FROM Employees e
+LEFT JOIN Employees m ON e.ManagerId = m.EmployeeId
+ORDER BY e.EmployeeName;
+GO
+```
+
+### Результат
+
+EmployeeName	|ManagerName
+---|---
+Алексей Лебедев|	NULL
+Анна Иванова	|NULL
+Дмитрий Орлов	|Ольга Смирнова
+Елена Волкова	|NULL
+Иван Петров	|Анна Иванова
+Мария Кузнецова|	Пётр Сидоров
+Наталья Соколова	|Алексей Лебедев
+Ольга Смирнова	|NULL
+Пётр Сидоров	|NULL
+Сергей Морозов	|NULL
+
+### Вывод
+Научился использовать self-join — соединение таблицы с самой собой. Для этого мы используем два алиаса (e для сотрудника, m для руководителя) и связываем ManagerId с EmployeeId. LEFT JOIN нужен, чтобы сотрудники без руководителя тоже попали в результат (с NULL в поле ManagerName).
