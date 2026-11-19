@@ -817,3 +817,46 @@ GO
 Индекс — это структура данных (обычно B-дерево), которая ускоряет поиск. Без индекса SQL Server читает всю таблицу (Table Scan), а с индексом — сразу находит нужные строки (Index Seek). Важно не создавать слишком много индексов, так как они замедляют INSERT/UPDATE/DELETE.
 
 На таблице из 10 строк разница в logical reads минимальна (или отсутствует), так как вся таблица помещается на одну страницу. Однако на больших объемах данных индекс IX_Employees_DepartmentId позволил бы избежать Table Scan и сократить количество чтений.
+
+## Task 21 — Хранимые процедуры
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+CREATE PROCEDURE sp_GetEmployeesByDepartment
+    @DeptId INT
+AS
+BEGIN
+    SELECT EmployeeId, EmployeeName, Salary
+    FROM Employees
+    WHERE DepartmentId = @DeptId;
+END;
+GO
+
+EXEC sp_GetEmployeesByDepartment @DeptId = 1;
+GO
+
+CREATE PROCEDURE sp_GetAvgSalaryByDepartment
+    @DeptId INT,
+    @AvgSalary DECIMAL(10,2) OUTPUT
+AS
+BEGIN
+    SELECT @AvgSalary = AVG(Salary)
+    FROM Employees
+    WHERE DepartmentId = @DeptId;
+END;
+GO
+
+DECLARE @Avg DECIMAL(10,2);
+EXEC sp_GetAvgSalaryByDepartment @DeptId = 1, @AvgSalary = @Avg OUTPUT;
+SELECT @Avg AS AvgSalary;
+GO
+```
+### Результат
+sp_GetEmployeesByDepartment (DeptId = 1): 4 сотрудника (Анна, Пётр, Мария, Иван).
+sp_GetAvgSalaryByDepartment (DeptId = 1): 60000.00 (средняя зарплата).
+
+### Вывод
+Хранимые процедуры позволяют сохранить SQL-код на сервере и вызывать его по имени. Это удобно для повторяющихся операций. OUTPUT-параметры позволяют возвращать значения (например, агрегаты) в вызывающую среду.
