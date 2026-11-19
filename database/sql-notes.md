@@ -932,3 +932,36 @@ EmployeeId	|EmployeeName	|Salary
 
 ### Вывод
 Скалярная функция возвращает одно значение и может использоваться в SELECT. Табличная функция возвращает таблицу и используется в FROM. В отличие от процедур, функции можно вызывать прямо в запросах.
+
+## Task 23 — Оконные функции: ROW_NUMBER, RANK, DENSE_RANK
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    EmployeeName,
+    DepartmentId,
+    Salary,
+    ROW_NUMBER() OVER (ORDER BY Salary DESC) AS RowNumber,
+    RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS RankInDept,
+    DENSE_RANK() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS DenseRankInDept
+FROM Employees
+ORDER BY DepartmentId, Salary DESC;
+GO
+```
+### Результат
+
+EmployeeName	|DepartmentId	|Salary	|RowNumber	|RankInDept|	DenseRankInDept
+---|---|---|---|---|---
+Пётр Сидоров|	1|	72000.00|	2	|1|	1
+Анна Иванова|	1	|65000.00|	3|	2|	2
+Мария Кузнецова	|1	|55000.00|	6|	3|	3
+Иван Петров	|1	|48000.00|	8|	4|	4|
+Ольга Смирнова|	2|	61000.00	|4|	1|	1
+Дмитрий Орлов|	2|	58000.00|	5|	2|	2
+Елена Волкова|	2|	52000.00|	7|	3|	3
+Сергей Морозов	|3|	45000.00|	9|	1	|1
+Наталья Соколова|	3|	43000.00|	10|	2|	2
+Алексей Лебедев	|4|	90000.00	|1|	1|	1
