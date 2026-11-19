@@ -965,3 +965,39 @@ EmployeeName	|DepartmentId	|Salary	|RowNumber	|RankInDept|	DenseRankInDept
 Сергей Морозов	|3|	45000.00|	9|	1	|1
 Наталья Соколова|	3|	43000.00|	10|	2|	2
 Алексей Лебедев	|4|	90000.00	|1|	1|	1
+
+## Task 24 — Оконные агрегаты: SUM OVER, AVG OVER
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    EmployeeName,
+    DepartmentId,
+    Salary,
+    SUM(Salary) OVER (PARTITION BY DepartmentId) AS TotalDeptSalary,
+    ROUND(AVG(Salary) OVER (PARTITION BY DepartmentId), 2) AS AvgDeptSalary,
+    ROUND(Salary - AVG(Salary) OVER (PARTITION BY DepartmentId), 2) AS DifferenceFromAvg
+FROM Employees
+ORDER BY DepartmentId, Salary DESC;
+GO
+```
+### Результат
+
+EmployeeName	|DepartmentId	|Salary	|TotalDeptSalary	|AvgDeptSalary	DifferenceFromAvg
+---|---|---|---|---
+Пётр Сидоров	|1	|72000.00	|240000.00	|60000.000000	|12000.000000
+Анна Иванова	|1	|65000.00	|240000.00	|60000.000000	|5000.000000
+Мария Кузнецова	|1	|55000.00	|240000.00|	60000.000000	|-5000.000000
+Иван Петров	|1	|48000.00	|240000.00	|60000.000000	|-12000.000000
+Ольга Смирнова	|2	|61000.00	|171000.00	|57000.000000	|4000.000000
+Дмитрий Орлов	|2	|58000.00	|171000.00	|57000.000000	|1000.000000
+Елена Волкова	|2	|52000.00	|171000.00|	57000.000000	|-5000.000000
+Сергей Морозов	|3	|45000.00	|88000.00	|44000.000000	|1000.000000
+Наталья Соколова|	3|	43000.00|	88000.00|	44000.000000	|-1000.000000
+Алексей Лебедев	|4	|90000.00	|90000.00	90000.000000	|0.000000
+
+### Вывод
+Понял, как работают оконные агрегаты (SUM ... OVER, AVG ... OVER). Главное отличие от GROUP BY в том, что они не сворачивают строки. Это позволяет видеть и индивидуальные значения (зарплату), и агрегаты по группе (сумму по отделу) в одной строке.
