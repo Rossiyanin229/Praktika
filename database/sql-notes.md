@@ -664,3 +664,44 @@ EmployeeId	|EmployeeName	|HireDate
 
 ### Вывод
 Научился использовать UPDATE с условием WHERE. Понял, что важно сначала делать SELECT, чтобы не обновить лишние строки. Арифметические операции (* 1.10, + 5000) работают прямо в SET.
+
+## Task 17 — DELETE: удаление данных
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+-- Удалить назначения на проект с Hours = 0
+SELECT COUNT(*) AS BeforeDelete FROM EmployeeProjects WHERE Hours = 0;
+DELETE FROM EmployeeProjects WHERE Hours = 0;
+SELECT COUNT(*) AS AfterDelete FROM EmployeeProjects WHERE Hours = 0;
+GO
+
+-- Удалить сотрудника по EmployeeId (ID = 4)
+SELECT * FROM EmployeeProjects WHERE EmployeeId = 4;
+SELECT * FROM Employees WHERE EmployeeId = 4;
+
+DELETE FROM EmployeeProjects WHERE EmployeeId = 4;
+DELETE FROM Employees WHERE EmployeeId = 4;
+
+SELECT COUNT(*) AS EmployeeExists FROM Employees WHERE EmployeeId = 4;
+GO
+
+-- DELETE без WHERE
+CREATE TABLE TestDelete (Id INT PRIMARY KEY IDENTITY(1,1), Name NVARCHAR(50));
+INSERT INTO TestDelete (Name) VALUES ('Тест 1'), ('Тест 2'), ('Тест 3');
+SELECT COUNT(*) AS BeforeTruncate FROM TestDelete;
+DELETE FROM TestDelete;
+SELECT COUNT(*) AS AfterTruncate FROM TestDelete;
+DROP TABLE TestDelete;
+GO
+```
+
+### Результат
+* До удаления (Hours = 0): 0 строк (так как у нас в данных нет 0 часов). После: 0 строк.
+* Иван Петров (ID 4) удален вместе со своими назначениями. SELECT COUNT(*) вернул 0.
+* До: 3 строки, после DELETE без WHERE: 0 строк.
+
+### Вывод
+Научился удалять данные с учетом внешних ключей: сначала удаляем зависимые записи (из EmployeeProjects), потом основную (из Employees). Понял, что DELETE без WHERE удаляет все строки из таблицы (в отличие от TRUNCATE, который быстрее и сбрасывает IDENTITY).
