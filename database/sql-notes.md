@@ -777,3 +777,43 @@ GO
 
 ### Вывод
 Представление — это виртуальная таблица, которая не хранит данные, а каждый раз выполняет запрос. Это удобно для инкапсуляции сложных JOIN и разграничения прав доступа (можно дать пользователю доступ к VIEW, а не к исходным таблицам).
+
+## Task 20 — Индексы: создание и анализ
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SET STATISTICS IO ON;
+GO
+
+-- ДО индексов
+SELECT EmployeeId, EmployeeName, Salary, DepartmentId
+FROM Employees
+WHERE DepartmentId = 1 AND Salary > 50000;
+GO
+
+-- Создаем индексы
+CREATE INDEX IX_Employees_DepartmentId ON Employees(DepartmentId);
+CREATE INDEX IX_Employees_Salary ON Employees(Salary);
+GO
+
+-- ПОСЛЕ индексов
+SELECT EmployeeId, EmployeeName, Salary, DepartmentId
+FROM Employees
+WHERE DepartmentId = 1 AND Salary > 50000;
+GO
+
+SET STATISTICS IO OFF;
+GO
+```
+
+### Результат 
+
+![alt text](image.png)
+
+### Вывод
+Индекс — это структура данных (обычно B-дерево), которая ускоряет поиск. Без индекса SQL Server читает всю таблицу (Table Scan), а с индексом — сразу находит нужные строки (Index Seek). Важно не создавать слишком много индексов, так как они замедляют INSERT/UPDATE/DELETE.
+
+На таблице из 10 строк разница в logical reads минимальна (или отсутствует), так как вся таблица помещается на одну страницу. Однако на больших объемах данных индекс IX_Employees_DepartmentId позволил бы избежать Table Scan и сократить количество чтений.
