@@ -745,3 +745,35 @@ GO
 
 ### Вывод
 Понял, что такое транзакция: это набор операций, который выполняется как единое целое. ROLLBACK отменяет все изменения, сделанные в транзакции (как будто их не было). COMMIT сохраняет их навсегда. Это критически важно для финансовых систем, где ошибка может стоить денег.
+
+## Task 19 — Представления (VIEW)
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+CREATE VIEW vw_EmployeeDetails AS
+SELECT 
+    e.EmployeeName,
+    d.DepartmentName,
+    p.ProjectName,
+    ep.Hours
+FROM Employees e
+INNER JOIN Departments d ON e.DepartmentId = d.DepartmentId
+INNER JOIN EmployeeProjects ep ON e.EmployeeId = ep.EmployeeId
+INNER JOIN Projects p ON ep.ProjectId = p.ProjectId;
+GO
+
+SELECT * FROM vw_EmployeeDetails;
+GO
+
+DROP VIEW vw_EmployeeDetails;
+GO
+```
+
+### Результат
+**vw_EmployeeDetails** вернуло таблицу с колонками: *EmployeeName*, *DepartmentName*, *ProjectName*, *Hours* (те же данные, что в задании 10). После **DROP VIEW** представление удалено.
+
+### Вывод
+Представление — это виртуальная таблица, которая не хранит данные, а каждый раз выполняет запрос. Это удобно для инкапсуляции сложных JOIN и разграничения прав доступа (можно дать пользователю доступ к VIEW, а не к исходным таблицам).
