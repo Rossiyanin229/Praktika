@@ -705,3 +705,43 @@ GO
 
 ### Вывод
 Научился удалять данные с учетом внешних ключей: сначала удаляем зависимые записи (из EmployeeProjects), потом основную (из Employees). Понял, что DELETE без WHERE удаляет все строки из таблицы (в отличие от TRUNCATE, который быстрее и сбрасывает IDENTITY).
+
+## Task 18 — Транзакции: BEGIN TRAN / COMMIT / ROLLBACK
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+-- ROLLBACK
+BEGIN TRANSACTION;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE EmployeeId = 1;
+UPDATE Employees SET Salary = Salary + 10000 WHERE EmployeeId = 1;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE EmployeeId = 1;
+ROLLBACK TRANSACTION;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE EmployeeId = 1;
+GO
+
+-- COMMIT
+BEGIN TRANSACTION;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE EmployeeId = 1;
+UPDATE Employees SET Salary = Salary + 10000 WHERE EmployeeId = 1;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE EmployeeId = 1;
+COMMIT TRANSACTION;
+SELECT EmployeeId, EmployeeName, Salary FROM Employees WHERE EmployeeId = 1;
+GO
+```
+
+### Результат
+* Тест 1 (ROLLBACK):
+  * До: 65000.00
+  * После UPDATE: 75000.00
+  * После ROLLBACK: 65000.00 (изменение откатилось)
+
+* Тест 2 (COMMIT):
+  * До: 65000.00
+  * После UPDATE: 75000.00
+  * После COMMIT: 75000.00 (изменение сохранилось)
+
+### Вывод
+Понял, что такое транзакция: это набор операций, который выполняется как единое целое. ROLLBACK отменяет все изменения, сделанные в транзакции (как будто их не было). COMMIT сохраняет их навсегда. Это критически важно для финансовых систем, где ошибка может стоить денег.
