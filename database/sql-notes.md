@@ -860,3 +860,75 @@ sp_GetAvgSalaryByDepartment (DeptId = 1): 60000.00 (средняя зарпла�
 
 ### Вывод
 Хранимые процедуры позволяют сохранить SQL-код на сервере и вызывать его по имени. Это удобно для повторяющихся операций. OUTPUT-параметры позволяют возвращать значения (например, агрегаты) в вызывающую среду.
+
+## Task 22 — Функции: скалярная и табличная
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+CREATE FUNCTION fn_GetAnnualSalary
+(
+    @MonthlySalary DECIMAL(10,2)
+)
+RETURNS DECIMAL(10,2)
+AS
+BEGIN
+    RETURN @MonthlySalary * 12;
+END;
+GO
+
+SELECT 
+    EmployeeName,
+    Salary AS MonthlySalary,
+    dbo.fn_GetAnnualSalary(Salary) AS AnnualSalary
+FROM Employees;
+GO
+
+CREATE FUNCTION fn_GetEmployeesBySalaryRange
+(
+    @Min DECIMAL(10,2),
+    @Max DECIMAL(10,2)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT EmployeeId, EmployeeName, Salary
+    FROM Employees
+    WHERE Salary BETWEEN @Min AND @Max
+);
+GO
+
+SELECT * FROM dbo.fn_GetEmployeesBySalaryRange(50000, 70000);
+GO
+```
+
+### Результат
+* Скалярная
+
+EmployeeName	|MonthlySalary|	AnnualSalary
+---|---|---
+Анна Иванова	|65000.00	|780000.00
+Пётр Сидоров	|72000.00	|864000.00
+Мария Кузнецова	|55000.00	|660000.00
+Иван Петров	|48000.00	|576000.00
+Ольга Смирнова	|61000.00	|732000.00
+Дмитрий Орлов	|58000.00	|696000.00
+Елена Волкова	|52000.00	|624000.00
+Сергей Морозов	|45000.00	|540000.00
+Наталья Соколова	|43000.00	|516000.00
+Алексей Лебедев	|90000.00	|1080000.00
+* Табличная
+
+EmployeeId	|EmployeeName	|Salary
+---|---|---
+1	|Анна Иванова	|65000.00
+3	|Мария Кузнецова	|55000.00
+5	|Ольга Смирнова|	61000.00
+6	|Дмитрий Орлов	|58000.00
+7|	Елена Волкова	|52000.00
+
+### Вывод
+Скалярная функция возвращает одно значение и может использоваться в SELECT. Табличная функция возвращает таблицу и используется в FROM. В отличие от процедур, функции можно вызывать прямо в запросах.
