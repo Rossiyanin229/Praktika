@@ -1187,3 +1187,92 @@ public class Task28_SqlSelect : ITask
 Консольное приложение вывело список сотрудников с их зарплатами.
 ### Вывод
 Научился подключаться к SQL Server из C# с помощью Microsoft.Data.SqlClient. Использовал SqlConnection, SqlCommand и SqlDataReader. Строку подключения взял из переменной окружения (с фолбэком для локального теста). Обработал возможные SqlException.
+## Task 29 — C# + SQL: параметризованный INSERT
+### C#
+
+```csharp
+using Main.Common;
+using Microsoft.Data.SqlClient;
+
+namespace Main.Database;
+
+[TaskInfo(29, "C# + SQL: параметризованный INSERT",
+    "Добавить сотрудника из C#-приложения.",
+    "Метод AddEmployee(string name, decimal salary, int departmentId)",
+    "Параметризованный запрос (@name, @salary, @deptId) — без конкатенации (защита от SQL-инъекций)",
+    "Выполнить INSERT INTO Employees ...",
+    "После вставки — SELECT для подтверждения",
+    "Обработать ошибки (FK violation, дубликат)")]
+public class Task29_SqlInsert : ITask
+{
+    private readonly string _connectionString = Environment.GetEnvironmentVariable("PRACTICE_DB_CONNECTION")
+        ?? @"Server=localhost\SQLEXPRESS02;Database=PracticeDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+    public void Run()
+    {
+        
+        AddEmployee("Тестовый Сотрудник", 50000m, 1);
+
+       
+        ShowEmployee("Тестовый Сотрудник");
+    }
+
+    private void AddEmployee(string name, decimal salary, int departmentId)
+    {
+        
+        string query = @"INSERT INTO Employees (EmployeeName, Salary, HireDate, DepartmentId, ManagerId) 
+                         VALUES (@name, @salary, GETDATE(), @deptId, NULL)";
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                   
+                    command.Parameters.AddWithValue("@name", name);
+                    command.Parameters.AddWithValue("@salary", salary);
+                    command.Parameters.AddWithValue("@deptId", departmentId);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    Console.WriteLine($"Добавлено строк: {rowsAffected}");
+                }
+            }
+        }
+        catch (SqlException ex)
+        {
+          
+            Console.WriteLine($"Ошибка SQL: {ex.Message}");
+            if (ex.Number == 547) 
+                Console.WriteLine("Ошибка: такого отдела не существует.");
+        }
+    }
+
+    private void ShowEmployee(string name)
+    {
+        string query = "SELECT EmployeeId, EmployeeName, Salary, DepartmentId FROM Employees WHERE EmployeeName = @name";
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@name", name);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine($"ID: {reader.GetInt32(0)}, Имя: {reader.GetString(1)}, Зарплата: {reader.GetDecimal(2)}, Отдел: {reader.GetInt32(3)}");
+                    }
+                }
+            }
+        }
+    }
+}
+```
+### Результат
+Сотрудник "Тестовый Сотрудник" успешно добавлен в базу.
+
+### Вывод
+Понял, что параметризованные запросы — это обязательное правило безопасности. Они предотвращают SQL-инъекции и автоматически экранируют специальные символы. Использовал ExecuteNonQuery для INSERT и SqlDataReader для проверки.

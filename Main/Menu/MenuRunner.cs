@@ -94,6 +94,13 @@ public class MenuRunner
                 var instance = (ITask)Activator.CreateInstance(taskType)!;
                 instance.Run();
             }
+            else if(input == "2")
+            {
+
+                var taskType = typeof(Task29_SqlInsert);
+                var instance = (ITask)Activator.CreateInstance(taskType)!;
+                instance.Run();
+            }
             else
             {
                 Console.WriteLine("\n[Задание в разработке...]");
