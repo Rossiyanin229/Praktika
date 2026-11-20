@@ -1001,3 +1001,39 @@ EmployeeName	|DepartmentId	|Salary	|TotalDeptSalary	|AvgDeptSalary	DifferenceFro
 
 ### Вывод
 Понял, как работают оконные агрегаты (SUM ... OVER, AVG ... OVER). Главное отличие от GROUP BY в том, что они не сворачивают строки. Это позволяет видеть и индивидуальные значения (зарплату), и агрегаты по группе (сумму по отделу) в одной строке.
+
+## Task 25 — CTE (Common Table Expressions)
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+-- 1. Переписываем запрос 12 через CTE
+WITH AvgSalary AS (
+    SELECT AVG(Salary) AS AvgSal FROM Employees
+)
+SELECT e.EmployeeId, e.EmployeeName, e.Salary
+FROM Employees e, AvgSalary a
+WHERE e.Salary > a.AvgSal;
+GO
+
+-- 2. CTE для топ-3 отделов по средней зарплате
+WITH DeptAvg AS (
+    SELECT 
+        DepartmentId, 
+        ROUND(AVG(Salary), 2) AS AvgSalary
+    FROM Employees
+    GROUP BY DepartmentId
+)
+SELECT TOP 3 DepartmentId, AvgSalary
+FROM DeptAvg
+ORDER BY AvgSalary DESC;
+GO
+```
+### Результат
+1. Сотрудники выше средней: (те же, что в задании 12: Анна, Пётр, Ольга, Алексей).
+2. Топ-3 отдела по средней зарплате: Отдел 4 (90000.00), Отдел 1 (60000.00), Отдел 2 (57000.00).
+
+### Вывод
+CTE (WITH ... AS ...) делает запрос более читаемым, так как подзапрос выносится в начало и получает имя. Это особенно удобно, когда один и тот же подзапрос используется несколько раз или когда запрос становится очень сложным.
