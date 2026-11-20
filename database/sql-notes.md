@@ -1037,3 +1037,48 @@ GO
 
 ### Вывод
 CTE (WITH ... AS ...) делает запрос более читаемым, так как подзапрос выносится в начало и получает имя. Это особенно удобно, когда один и тот же подзапрос используется несколько раз или когда запрос становится очень сложным.
+
+## Task 26 — CASE: условная логика в SELECT
+### SQL
+
+```sql
+USE PracticeDB;
+GO
+
+SELECT 
+    EmployeeName,
+    Salary,
+    CASE 
+        WHEN Salary > 60000 THEN 'High'
+        WHEN Salary >= 40000 AND Salary <= 60000 THEN 'Medium'
+        ELSE 'Low'
+    END AS SalaryLevel,
+    HireDate,
+    CASE 
+        WHEN YEAR(HireDate) < 2020 THEN 'Senior'
+        WHEN YEAR(HireDate) >= 2020 AND YEAR(HireDate) <= 2022 THEN 'Mid'
+        ELSE 'Junior'
+    END AS Tenure
+FROM Employees
+ORDER BY Salary DESC;
+GO
+```
+
+### Результат
+
+EmployeeName	|Salary	|SalaryLevel|	HireDate	|Tenure
+---|---|---|---|---
+Алексей Лебедев	|90000.00	|High	|2018-05-25|	Senior
+Пётр Сидоров|	72000.00	|High	|2019-07-01	|Senior
+Анна Иванова	|65000.00	|High	|2020-03-15|	Mid
+Ольга Смирнова|	61000.00	|High	|2020-09-05|	Mid
+Дмитрий Орлов	|58000.00|	Medium|	2022-04-18	|Mid
+Мария Кузнецова	|55000.00	|Medium	|2021-11-20|	Mid
+Елена Волкова	|52000.00	|Medium	|2023-06-01	|Junior
+Иван Петров	|48000.00	|Medium	|2023-02-10	|Junior
+Сергей Морозов	|45000.00	|Medium	|2021-12-12	|Mid
+Наталья Соколова	|43000.00	|Medium	|2024-01-15	|Junior
+
+### Вывод
+CASE — это мощный инструмент для создания вычисляемых колонок. В отличие от IIF, он поддерживает несколько условий (WHEN ... THEN ... WHEN ... THEN ... ELSE ...), что позволяет строить сложные категории.
+
