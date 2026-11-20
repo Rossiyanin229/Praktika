@@ -15,4 +15,8 @@
     <None Include="C:\Users\core i7-6500\source\repos\Main\Main\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.2" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,11 @@
-﻿using System;
+using Main.Common;
+using Main.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
-using System.Reflection;
-using Main.Common;
 
 namespace Main.Menu;
 
@@ -34,9 +34,9 @@ public class MenuRunner
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("4. Выход");
-            Console.ResetColor();
-
+            Console.WriteLine("4. Базы данных (SQL)");
+            Console.WriteLine("5. Выход");
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -45,10 +45,14 @@ public class MenuRunner
 
             string? input = Console.ReadLine();
 
-            if (input == "4" || input?.ToLower() == "q")
+            if (input == "5" || input?.ToLower() == "q")
             {
                 Console.WriteLine("Выход из программы...");
                 break;
+            }
+            else if (input == "4")
+            {
+                RunDatabaseMenu();
             }
             else if (input == "1" || input == "2" || input == "3")
             {
@@ -62,5 +66,43 @@ public class MenuRunner
                 Console.ReadLine();
             }
         }
+    }                   
+
+        private void RunDatabaseMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            ConsoleHelper.PrintHeader("=== Базы данных (SQL) ===");
+            Console.ResetColor();
+
+            Console.WriteLine("1. Задание 28: C# + SQL (SELECT)");
+            Console.WriteLine("2. Задание 29: C# + SQL (INSERT)");
+            Console.WriteLine("3. Задание 30: C# + SQL (Отчёт)");
+            Console.WriteLine("0. Назад");
+            Console.WriteLine();
+            Console.Write("Выберите задание: ");
+
+            string? input = Console.ReadLine();
+            if (input == "0") break;
+
+            if (input == "1")
+            {
+               
+                var taskType = typeof(Task28_SqlSelect); 
+                var instance = (ITask)Activator.CreateInstance(taskType)!;
+                instance.Run();
+            }
+            else
+            {
+                Console.WriteLine("\n[Задание в разработке...]");
+            }
+
+            Console.WriteLine("\nНажмите Enter для возврата...");
+            Console.ReadLine();
+        }
     }
 }
+
+
