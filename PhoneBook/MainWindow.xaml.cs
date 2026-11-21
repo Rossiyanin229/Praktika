@@ -20,24 +20,39 @@ namespace PhoneBook
         public MainWindow()
         {
             InitializeComponent();
-
             LoadData();
         }
 
-      
         private void LoadData()
         {
             using (var db = new AppDbContext())
             {
-                try
+                ContactsGrid.ItemsSource = db.Contacts.ToList();
+            }
+        }
+
+       
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+   
+            var editWindow = new ContactEditWindow();
+        
+            editWindow.Owner = this;
+
+         
+            if (editWindow.ShowDialog() == true)
+            {
+            
+                var newContact = editWindow.CurrentContact;
+
+            
+                using (var db = new AppDbContext())
                 {
-                    
-                    ContactsGrid.ItemsSource = db.Contacts.ToList();
+                    db.Contacts.Add(newContact);
+                    db.SaveChanges();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка");
-                }
+
+                LoadData();
             }
         }
     }
