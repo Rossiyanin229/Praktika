@@ -21,18 +21,22 @@ namespace PhoneBook
         {
             InitializeComponent();
 
-            // Проверка подключения к базе данных
+            LoadData();
+        }
+
+      
+        private void LoadData()
+        {
             using (var db = new AppDbContext())
             {
                 try
                 {
-                    // Пытаемся посчитать количество записей
-                    var count = db.Contacts.Count();
-                    MessageBox.Show($"Успех! Подключение работает. В базе {count} контактов.", "Проверка БД");
+                    
+                    ContactsGrid.ItemsSource = db.Contacts.ToList();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка подключения: {ex.Message}", "Ошибка");
+                    MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка");
                 }
             }
         }
