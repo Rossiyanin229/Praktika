@@ -44,6 +44,7 @@ namespace PhoneBook
             {
 
                 var newContact = editWindow.CurrentContact;
+                newContact.CreatedAt = DateTime.Now;
 
 
                 using (var db = new AppDbContext())
