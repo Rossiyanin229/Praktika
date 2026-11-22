@@ -31,21 +31,21 @@ namespace PhoneBook
             }
         }
 
-       
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-   
+
             var editWindow = new ContactEditWindow();
-        
+
             editWindow.Owner = this;
 
-         
+
             if (editWindow.ShowDialog() == true)
             {
-            
+
                 var newContact = editWindow.CurrentContact;
 
-            
+
                 using (var db = new AppDbContext())
                 {
                     db.Contacts.Add(newContact);
@@ -55,5 +55,71 @@ namespace PhoneBook
                 LoadData();
             }
         }
+
+                     
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+           
+            if (ContactsGrid.SelectedItem is Contact selectedContact)
+            {
+                
+                var result = MessageBox.Show($"Вы уверены, что хотите удалить {selectedContact.Name}?",
+                                             "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    using (var db = new AppDbContext())
+                    {
+                     
+                        var contactToDelete = db.Contacts.Find(selectedContact.Id);
+                        if (contactToDelete != null)
+                        {
+                            db.Contacts.Remove(contactToDelete);
+                            db.SaveChanges();
+                        }
+                    }
+                    
+                    LoadData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите контакт для удаления.", "Внимание");
+            }
+        }
+
+        private void BtnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (ContactsGrid.SelectedItem is Contact selectedContact)
+            {
+               
+                var editWindow = new ContactEditWindow();
+                editWindow.Owner = this;
+
+                editWindow.LoadContact(selectedContact);
+
+              
+                if (editWindow.ShowDialog() == true)
+                {
+                   
+                    using (var db = new AppDbContext())
+                    {
+                       
+                        var updatedContact = editWindow.CurrentContact;
+
+                       
+                        db.Contacts.Update(updatedContact);
+                        db.SaveChanges();
+                    }
+                   
+                    LoadData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите контакт для редактирования.", "Внимание");
+            }
+        }
     }
-}
+        }
+    
