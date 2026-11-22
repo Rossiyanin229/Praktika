@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
-using Microsoft.EntityFrameworkCore;
+
 
 namespace PhoneBook
 {
@@ -16,7 +16,7 @@ namespace PhoneBook
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // ВНИМАНИЕ: Двойной слеш перед SQLEXPRESS02 обязателен!
+             
                 optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS02;Database=PhoneBookDb;Trusted_Connection=True;TrustServerCertificate=True;");
             }
         }

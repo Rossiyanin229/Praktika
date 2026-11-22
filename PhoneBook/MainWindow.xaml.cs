@@ -92,26 +92,26 @@ namespace PhoneBook
         {
             if (ContactsGrid.SelectedItem is Contact selectedContact)
             {
-               
+
                 var editWindow = new ContactEditWindow();
                 editWindow.Owner = this;
 
                 editWindow.LoadContact(selectedContact);
 
-              
+
                 if (editWindow.ShowDialog() == true)
                 {
-                   
+
                     using (var db = new AppDbContext())
                     {
-                       
+
                         var updatedContact = editWindow.CurrentContact;
 
-                       
+
                         db.Contacts.Update(updatedContact);
                         db.SaveChanges();
                     }
-                   
+
                     LoadData();
                 }
             }
@@ -120,6 +120,31 @@ namespace PhoneBook
                 MessageBox.Show("Пожалуйста, выберите контакт для редактирования.", "Внимание");
             }
         }
-    }
+
+            private void SearchBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            using (var db = new AppDbContext())
+            {
+                if (string.IsNullOrWhiteSpace(SearchBox.Text))
+                {
+                    ContactsGrid.ItemsSource = db.Contacts.ToList();
+                }
+                else
+                {
+                    
+                    string searchText = SearchBox.Text.ToLower();
+                    var filtered = db.Contacts.Where(c =>
+                        c.Name.ToLower().Contains(searchText) ||
+                        c.Phone.ToLower().Contains(searchText)).ToList();
+
+                    ContactsGrid.ItemsSource = filtered;
+                }
+            }
         }
+    }
+
+
+
+    }
+        
     

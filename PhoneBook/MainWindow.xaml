@@ -16,7 +16,7 @@
         <!-- Панель поиска -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBox x:Name="SearchBox" Width="200" Height="25"/>
+            <TextBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" Width="200" Height="25"/>
         </StackPanel>
 
         <!-- Таблица контактов -->
